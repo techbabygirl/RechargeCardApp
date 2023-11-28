@@ -1,0 +1,176 @@
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    div.h1{
+display: flex;
+
+    }
+
+</style>
+<body>
+
+    
+    <div>
+        <h1>Recharge card generator</h1>
+    </div  >
+<div style="display: flex;">
+    <h5>Select Network :</h5><select name="" id="network"> 
+        <option id="mtnnetwork" value="mtn">mtn</option>
+        <option id="glonetwork" value="glo">glo</option>
+        <option id="etinetwork" value="etisalat">etisalat</option>
+    </select>
+</div>
+<div>
+
+</div>
+    <h5>Amount: <input type="text" id="amountVal"></h5>
+
+    <div style="display: flex; gap: 3rem;">
+        <h5> Code: <input type="number" id="code"></h5>
+        <button onclick="generate()">Generate</button>
+        <button onclick="save()">Save Pin</button>
+    </div>
+
+
+    <div style= "display: flex; gap: 3rem;" >
+        <h5> Enter pin: <input type="text" id="enterPin"></h5>
+        <button onclick="recharge()" >Recharge</button>
+    </div>
+
+<!-- <div id="display">
+
+</div> -->
+
+    <table>
+        <tr>
+            <th>SN</th>
+            <th>network ref</th>
+            <th>amount</th>
+            <th>pin</th>
+            <th>pin ref</th>
+            <th>status</th>
+            <th>date created</th>
+            <th>date used</th>
+            <th>del</th>
+        </tr>
+        <tbody id="display">
+            
+        </tbody>
+       
+    </table>
+
+ <script>
+
+   let cards =[]
+  
+
+ 
+   
+let generate = () => {
+ code.value = Math.floor(Math.random() * 9999678543567)
+ };
+
+ let LoadPins ={
+    mtn : '*123*',
+    glo : '*125*',
+    etisalat : '*127*',
+ }
+ let networkRef
+let amount
+let codeRef
+let printRef 
+let myDate
+ let save = () => {
+     networkRef = network.value
+     amount = amountVal.value
+     codeRef = code.value
+      printRef = `${LoadPins[networkRef]}${codeRef}#`
+       myDate = new Date();
+
+    let generate = {
+        amount,
+       networkRef,
+       codeRef,
+       printRef,
+      status : false,
+       myDate
+
+    };
+    cards.push(generate)
+    displayCardHistory()
+    
+}
+
+function displayCardHistory(){
+    display.innerHTML = ''
+    
+//
+    cards.forEach((elem, i)=>{
+        display.innerHTML +=`
+        <tr>
+            <td>${i + 1}</td>
+            <td>${elem.networkRef}</td>
+            <td>${elem.amount}</td>
+            <td>${elem.codeRef}</td>
+            <td>${elem.printRef}</td>
+            <td>${elem.status ? 'used':'unused'}</td>
+            <th>${elem.myDate}</th>
+            <th>jan</th>
+            <th> <button onclick ="deleteCard(${i})"> X</button></th>
+        </tr>
+        `
+        
+    })
+    }
+  displayCardHistory()
+
+ function deleteCard(index){
+ const newCard = cards.filter(function(elem, i){
+    return i != index
+ })
+ cards = newCard
+displayCardHistory()
+
+  }
+//   let use = used;
+  let recharge = () =>{
+//     let enterPins = enterPin.value
+// //   let status = true
+//  cards.forEach((elem)=> {
+//     if(elem.printRef === enterPins){
+//         // status = used;
+//     }else i(elem.status)
+//  })
+//  displayCardHistory()
+
+// find if the card exist in our array
+let findCard = cards.find((elem)=> elem.printRef === enterPin.value)
+    // run some code if card exist
+    if (findCard) {
+        // check if card has alredy been used before
+        if (findCard.status === true) {
+            alert('card has already been used')
+        }else{
+            findCard.status = true
+            displayCardHistory()
+        }  
+        // alert not found if card does nit exist
+    }else{
+        alert('not found')
+    } 
+
+  }
+//   recharge()
+//   console.log(cards);
+
+
+ </script>
+
+</body>
+
+</html>
